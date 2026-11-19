@@ -127,18 +127,15 @@ Suitable for use as the value of `treesit-language-source-alist'.")
   (when (< (treesit-library-abi-version) 15)
     (error "The curry-mode grammars need libtree-sitter 0.25 or newer")))
 
-(defun curry-install-grammars (&optional force)
-  "Install required language grammars if not already available.
+(defun curry-install-grammar (&optional force)
+  "Install required language grammar if not already available.
 With prefix argument FORCE, reinstall grammars even if they are
-already installed.  This is useful after upgrading curry-mode to a
-version that requires a newer grammar."
+already installed."
   (interactive "P")
-  (dolist (recipe curry-grammar-recipes)
-    (let ((grammar (car recipe)))
-      (when (or force (not (treesit-language-available-p grammar nil)))
-        (message "Installing %s tree-sitter grammar..." grammar)
-        (let ((treesit-language-source-alist curry-grammar-recipes))
-          (treesit-install-language-grammar grammar))))))
+  (when (or force (not (treesit-language-available-p 'haskell nil)))
+    (message "Installing haskell tree-sitter grammar...")
+    (let ((treesit-language-source-alist curry-grammar-recipes))
+      (treesit-install-language-grammar 'haskell))))
 
 (defconst curry--grammar-probes
   '(("type X = Int" . "type_synonym")
